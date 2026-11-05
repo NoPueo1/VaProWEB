@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Vapro - Cyberpunk 2099</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+  </head>
+  <body>
+
+    <!-- Header: barra superior con logo menu de navegacion carrito y accesos de usuario -->
+    <header class="py-3 mb-4"> 
+        <div class="container-fluid d-flex flex-wrap align-items-center justify-content-center justify-content-md-between"> 
+            <div class="col-md-3 mb-2 mb-md-0"> 
+                <a href="../Index.html" class="d-inline-flex align-items-center link-body-emphasis text-decoration-none brand-container">
+                    <img src="../Assets/logo.png" alt="Logo Vapro" class="brand-logo-img me-2">
+                    <img src="../Assets/logo-letras.png" alt="VaPro" class="brand-text-img">
+                </a> 
+            </div> 
+            <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0"> 
+                <li><a href="../Index.html" class="nav-link px-2 text-light">Pagina Principal</a></li> 
+                <li><a href="../Index.html#galeria-juegos" class="nav-link px-2 text-light">Productos</a></li> 
+                <li><a href="../Nosotros.html" class="nav-link px-2 text-light">Sobre Nosotros</a></li> 
+                <li><a href="../Blog.html" class="nav-link px-2 text-light">Blog</a></li> 
+                <li><a href="../Contacto.html" class="nav-link px-2 text-light">Contacto</a></li> 
+            </ul> 
+            <div class="col-md-3 text-end d-flex align-items-center justify-content-end"> 
+                <a href="../carrito.html" class="btn btn-outline-light me-2 position-relative">
+                    Carrito <span class="badge bg-danger rounded-pill badge-carrito-total d-none">0</span>
+                </a>
+                <div id="header-user-area" class="d-inline-flex align-items-center"><a href="../Login.html" class="btn btn-outline-light me-2">Iniciar Sesión</a> 
+                <a href="../Sign-up.html" class="btn btn-morado">Registrarse</a></div> 
+            </div> 
+        </div>
+    </header>
+
+    <!-- Detalle del juego: informacion principal precio botones de compra y portada -->
+    <main class="container my-5">
+        
+        <a href="../Index.html" class="btn btn-outline-light mb-4">&larr; Volver a la Tienda</a>
+
+        <div class="row g-5 mb-5">
+            
+            <div class="col-lg-7">
+                <div class="card card-admin p-2 shadow-lg mb-3">
+                    <img id="imagen-principal" src="../Assets/juegos/cyberpunk2099.png" alt="Cyberpunk 2099" class="img-fluid rounded-3 w-100 shadow visor-galeria-img object-fit-cover">
+                </div>
+                <div class="d-flex gap-2">
+                    <img src="../Assets/juegos/cyberpunk2099.png" alt="Portada" class="img-thumbnail bg-dark border-primary miniatura-galeria"  onclick="cambiarImagen(this.src)">
+                    <img src="../Assets/juegos/galeria/cyberpunk2099-gameplay.jpg" alt="Captura de juego" class="img-thumbnail bg-dark border-secondary miniatura-galeria"  onclick="cambiarImagen(this.src)">
+                </div>
+                <small class="text-white-50 d-block mt-2">Haz clic en una miniatura para cambiar la vista previa.</small>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="card card-admin p-4 p-md-5 rounded-3 h-100 d-flex flex-column" data-bs-theme="dark">
+                    
+                    <div class="mb-3">
+                        <span class="badge bg-primary fs-6 me-1">Acción</span><span class="badge bg-secondary fs-6 me-1">RPG</span>
+                    </div>
+                    <h1 class="display-5 fw-bold text-white mb-3">Cyberpunk 2099</h1>
+                    
+                    <p class="text-light fs-5 mb-4" style="line-height: 1.6;">
+                        Adéntrate en Neon Abyss, una megalópolis obsesionada con el poder, el glamour y la modificación corporal. Conviértete en un mercenario urbano equipado con mejoras cibernéticas y construye tu leyenda en las calles.
+                    </p>
+
+                    <ul class="list-unstyled text-white-50 mb-4 pb-4 border-bottom border-secondary border-opacity-25">
+                        <li><strong>Desarrollador:</strong> Red Pixel Studios</li>
+                        <li><strong>Fecha de lanzamiento:</strong> 15 Sep, 2026</li>
+                    </ul>
+
+                    <div class="mt-auto p-4 rounded-2 border border-secondary border-opacity-25" style="background-color: #14111f;">
+                        <h2 class="fw-bold text-warning mb-3">$29.990</h2>
+                        
+                        <form action="#" class="d-flex flex-column" onsubmit="return false;">
+                            <div class="d-flex align-items-center mb-3">
+                                <label for="cantidad" class="form-label text-white-50 small mb-0 me-3">Copias:</label>
+                                <input type="number" class="form-control text-center fw-bold bg-dark text-white border-secondary" id="cantidad" value="1" min="1" max="10" style="width: 80px;" required>
+                            </div>
+                            
+                            <button type="button" class="btn btn-morado btn-lg fw-bold" id="btn-comprar">
+                                Añadir al carrito
+                            </button>
+                        </form>
+
+                        <div id="alerta-compra" class="alert alert-success mt-3 d-none" role="alert">
+                            Juego añadido al carrito. <a href="../carrito.html" class="alert-link text-white fw-bold">Ir al Carrito</a>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-7">
+                <div class="card card-admin p-4 shadow-sm h-100">
+                    <h4 class="fw-bold text-white mb-3 border-bottom pb-2">Acerca del Juego</h4>
+                    <p class="text-light fs-6" style="line-height: 1.8;">
+                        Cyberpunk 2099 es una aventura de acción en mundo abierto ambientada en una metrópolis futurista. Personaliza las mejoras cibernéticas de tu personaje, elige tu estilo de juego entre sigilo, pirateo o combate directo, y toma decisiones cruciales que determinarán el destino de la ciudad.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="card card-admin p-4 shadow-sm h-100">
+                    <h4 class="fw-bold text-white mb-3 border-bottom pb-2">Requisitos del Sistema</h4>
+                    <ul class="list-unstyled text-light small mb-0">
+                        <li class="mb-2"><strong>SO:</strong> <span class="text-white-50">Windows 10 / 11 (64-bit)</span></li>
+                        <li class="mb-2"><strong>Procesador:</strong> <span class="text-white-50">Intel Core i7-8700K o AMD Ryzen 5 3600</span></li>
+                        <li class="mb-2"><strong>Memoria:</strong> <span class="text-white-50">16 GB de RAM</span></li>
+                        <li class="mb-2"><strong>Gráficos:</strong> <span class="text-white-50">NVIDIA GeForce RTX 2060 o AMD Radeon RX 5700</span></li>
+                        <li class="mb-0"><strong>Almacenamiento:</strong> <span class="text-white-50">70 GB de espacio disponible (SSD recomendado)</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </main>
+    
+    <!-- Footer: pie de pagina con enlaces del sitio informacion institucional y copyright -->
+    <footer class="py-5 mt-5">
+        <div class="container">
+            <div class="row g-4 justify-content-between">
+                <div class="col-12 col-md-6 col-lg-5"> 
+                    <a href="../Index.html" class="d-flex align-items-center mb-3 text-decoration-none" aria-label="Vapro"> 
+                        <img src="../Assets/logo.png" alt="Logo Vapro" class="footer-logo-img me-2">
+                        <img src="../Assets/logo-letras.png" alt="VaPro" class="footer-text-img">
+                    </a> 
+                    <p class="text-light mb-2">&copy; 2026 Provoste-Vasquez Corporation. Todos los derechos reservados.</p> 
+                    <p class="text-white-50 small mb-0">Todos los juegos en venta siguen las normativas de venta vigentes en la legislación chilena.</p>
+                </div> 
+
+                <div class="col-12 col-md-5 col-lg-4"> 
+                    <h5 class="text-white">Enlaces del Sitio</h5> 
+                    <ul class="nav flex-column"> 
+                        <li class="nav-item mb-2"><a href="../Index.html" class="nav-link p-0 text-light">Página Principal</a></li> 
+                        <li class="nav-item mb-2"><a href="../Nosotros.html" class="nav-link p-0 text-light">Sobre Nosotros</a></li> 
+                        <li class="nav-item mb-2"><a href="../Blog.html" class="nav-link p-0 text-light">Blog</a></li> 
+                        <li class="nav-item mb-2"><a href="../Contacto.html" class="nav-link p-0 text-light">Contacto</a></li> 
+                        <li class="nav-item mb-2"><a href="../carrito.html" class="nav-link p-0 text-light">Carrito de Compras</a></li> 
+                        <li class="nav-item mb-2"><a href="../admin.html" class="nav-link p-0 text-light fw-bold">Panel Administrador</a></li> 
+                    </ul> 
+                </div> 
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Scripts: librerias de almacenamiento validacion y logica en javascript -->
+
+    <script src="../js/storage.js"></script>
+    <script>
+      function cambiarImagen(src) {
+          document.getElementById("imagen-principal").src = src;
+          document.querySelectorAll(".miniatura-galeria").forEach(img => {
+              if (img.src === src) {
+                  img.classList.remove("border-secondary");
+                  img.classList.add("border-primary");
+              } else {
+                  img.classList.remove("border-primary");
+                  img.classList.add("border-secondary");
+              }
+          });
+      }
+
+      document.getElementById("btn-comprar").addEventListener("click", () => {
+          let cant = parseInt(document.getElementById("cantidad").value, 10) || 1;
+          agregarAlCarrito("JUEGO-1", cant);
+          let alerta = document.getElementById("alerta-compra");
+          if (alerta) alerta.classList.remove("d-none");
+      });
+    </script>
+  </body>
+</html>

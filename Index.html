@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Vapro - Inicio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+
+    <!-- Header: barra superior con logo menu de navegacion carrito y accesos de usuario -->
+    <header class="py-3 mb-4"> 
+        <div class="container-fluid d-flex flex-wrap align-items-center justify-content-center justify-content-md-between"> 
+            <div class="col-md-3 mb-2 mb-md-0"> 
+                <a href="Index.html" class="d-inline-flex align-items-center link-body-emphasis text-decoration-none brand-container">
+                    <img src="Assets/logo.png" alt="Logo Vapro" class="brand-logo-img me-2">
+                    <img src="Assets/logo-letras.png" alt="VaPro" class="brand-text-img">
+                </a> 
+            </div> 
+            <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0"> 
+                <li><a href="Index.html" class="nav-link px-2 text-light">Pagina Principal</a></li> 
+                <li><a href="Index.html#galeria-juegos" class="nav-link px-2 text-light">Productos</a></li> 
+                <li><a href="Nosotros.html" class="nav-link px-2 text-light">Sobre Nosotros</a></li> 
+                <li><a href="Blog.html" class="nav-link px-2 text-light">Blog</a></li> 
+                <li><a href="Contacto.html" class="nav-link px-2 text-light">Contacto</a></li> 
+            </ul> 
+            <div class="col-md-3 text-end d-flex align-items-center justify-content-end"> 
+                <a href="carrito.html" class="btn btn-outline-light me-2 position-relative">
+                    Carrito <span class="badge bg-danger rounded-pill badge-carrito-total d-none">0</span>
+                </a>
+                <div id="header-user-area" class="d-inline-flex align-items-center"><a href="Login.html" class="btn btn-outline-light me-2">Iniciar Sesión</a> 
+                <a href="Sign-up.html" class="btn btn-morado">Registrarse</a></div> 
+            </div> 
+        </div>
+    </header>
+
+    <!-- Carrusel: vitrina interactiva con portadas de los juegos mas destacados -->
+    <main class="container my-5">
+        <div id="carruselJuegosDestacados" class="carousel slide carousel-fade rounded-2 border border-secondary border-opacity-25" data-bs-ride="carousel">
+            
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carruselJuegosDestacados" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carruselJuegosDestacados" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carruselJuegosDestacados" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+
+            <div class="carousel-inner rounded-3">
+                <div class="carousel-item active">
+                    <a href="Sitio-Juegos/Cyberpunk2099.html">
+                        <img src="Assets/juegos/cyberpunk2099.png" class="d-block w-100" alt="cyberpunk2099">
+                    </a>
+                    <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-75 rounded p-2">
+                        <h5><a href="Sitio-Juegos/Cyberpunk2099.html" class="text-white text-decoration-none">Cyberpunk 2099</a></h5>
+                        <p class="mb-0">Entra en el distopico mundo de Cyberpunk2099</p>
+                    </div>
+                </div>
+
+                <div class="carousel-item">
+                    <a href="Sitio-Juegos/Pickcraft2.html">
+                        <img src="Assets/juegos/pickcraft2.png" class="d-block w-100" alt="pickcraft2">
+                    </a>
+                    <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-75 rounded p-2">
+                        <h5><a href="Sitio-Juegos/Pickcraft2.html" class="text-white text-decoration-none">Pickcraft 2</a></h5>
+                        <p class="mb-0">Mas bloques que nunca, la aventura te espera</p>
+                    </div>
+                </div>
+
+                <div class="carousel-item">
+                    <a href="Sitio-Juegos/ResidentGood4.html">
+                        <img src="Assets/juegos/residentgood4.png" class="d-block w-100" alt="residentgood4">
+                    </a>
+                    <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-75 rounded p-2">
+                        <h5><a href="Sitio-Juegos/ResidentGood4.html" class="text-white text-decoration-none">Resident Good 4</a></h5>
+                        <p class="mb-0">Leon nunca fue tan feliz como en Resident Good 4</p>
+                    </div>
+                </div>
+            </div>
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#carruselJuegosDestacados" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carruselJuegosDestacados" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Siguiente</span>
+            </button>
+        </div>
+    </main>
+
+    <!-- Seccion del Catalogo de Videojuegos - Destacado y Recomendados -->
+    <section class="container my-5">        
+        <h3 class="text-white mb-4 border-bottom pb-2">Destacados y Recomendados</h3>
+        
+        <div id="galeria-juegos" class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4"></div>
+    </section>
+    
+    <!-- Footer: pie de pagina con enlaces del sitio informacion institucional y copyright -->
+    <footer class="py-5 mt-5">
+        <div class="container">
+            <div class="row g-4 justify-content-between">
+                <div class="col-12 col-md-6 col-lg-5"> 
+                    <a href="Index.html" class="d-flex align-items-center mb-3 text-decoration-none" aria-label="Vapro"> 
+                        <img src="Assets/logo.png" alt="Logo Vapro" class="footer-logo-img me-2">
+                        <img src="Assets/logo-letras.png" alt="VaPro" class="footer-text-img">
+                    </a> 
+                    <p class="text-light mb-2">&copy; 2026 Provoste-Vasquez Corporation. Todos los derechos reservados.</p> 
+                    <p class="text-white-50 small mb-0">Todos los juegos en venta siguen las normativas de venta vigentes en la legislación chilena.</p>
+                </div> 
+
+                <div class="col-12 col-md-5 col-lg-4"> 
+                    <h5 class="text-white">Enlaces del Sitio</h5> 
+                    <ul class="nav flex-column"> 
+                        <li class="nav-item mb-2"><a href="Index.html" class="nav-link p-0 text-light">Página Principal</a></li> 
+                        <li class="nav-item mb-2"><a href="Nosotros.html" class="nav-link p-0 text-light">Sobre Nosotros</a></li> 
+                        <li class="nav-item mb-2"><a href="Blog.html" class="nav-link p-0 text-light">Blog</a></li> 
+                        <li class="nav-item mb-2"><a href="Contacto.html" class="nav-link p-0 text-light">Contacto</a></li> 
+                        <li class="nav-item mb-2"><a href="carrito.html" class="nav-link p-0 text-light">Carrito de Compras</a></li> 
+                        <li class="nav-item mb-2"><a href="admin.html" class="nav-link p-0 text-light fw-bold">Panel Administrador</a></li> 
+                    </ul> 
+                </div> 
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts: librerias de almacenamiento validacion y logica en javascript -->
+
+    <script src="js/storage.js"></script>
+    <script src="js/validations.js"></script>
+    <script src="Main.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

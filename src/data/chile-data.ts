@@ -1,10 +1,10 @@
-﻿export interface RegionChile {
+export interface RegionChile {
   id: string;
   nombre: string;
   comunas: string[];
 }
 
-// Regiones y comunas: divisiones de Chile
+// listado de regiones y comunas de chile
 export const REGIONES_CHILE = [
     {
         id: "AP",

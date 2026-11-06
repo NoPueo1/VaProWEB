@@ -35,7 +35,7 @@ export interface ItemCarrito {
   cantidad: number;
 }
 
-// Catalogo inicial: lista de videojuegos precargados con precio stock y categoria
+// catalogo inicial de videojuegos precargados en la tienda
 export const juegosPorDefecto: Juego[] = [
   {
     id: "JUEGO-1",
@@ -153,49 +153,6 @@ export const juegosPorDefecto: Juego[] = [
   },
   {
     id: "JUEGO-9",
-    codigo: "CFLIP",
-    nombre: "Coches Flipantes",
-    descripcion: "Carreras alocadas y choques en pistas extremas.",
-    precio: 8990,
-    stock: 18,
-    stockCritico: 4,
-    categoria: "Carreras",
-    imagen: "/Assets/juegos/cochesflipantes.png",
-    gameplay: "/Assets/juegos/galeria/cochesflipantes-gameplay.jpg",
-    etiquetas: ["Carreras", "Arcade"],
-    enlace: "/Sitio-Juegos/CochesFlipantes.html",
-  },
-  {
-    id: "JUEGO-10",
-    codigo: "ETFR01",
-    nombre: "Enter The FrontRooms",
-    descripcion:
-      "Explora habitaciones infinitas y sobrevive a entidades desconocidas.",
-    precio: 7990,
-    stock: 6,
-    stockCritico: 3,
-    categoria: "Horror",
-    imagen: "/Assets/juegos/enterthefrontrooms.png",
-    gameplay: "/Assets/juegos/galeria/enterthefrontrooms-gameplay.jpg",
-    etiquetas: ["Terror", "Misterio"],
-    enlace: "/Sitio-Juegos/EnterTheFrontRooms.html",
-  },
-  {
-    id: "JUEGO-11",
-    codigo: "HDEAD3",
-    nombre: "Half Dead 3",
-    descripcion: "Sobrevive a salas trampa en un complejo subterráneo.",
-    precio: 9990,
-    stock: 9,
-    stockCritico: 2,
-    categoria: "Acción",
-    imagen: "/Assets/juegos/halfdead3.png",
-    gameplay: "/Assets/juegos/galeria/halfdead3-gameplay.jpg",
-    etiquetas: ["Acción", "Supervivencia"],
-    enlace: "/Sitio-Juegos/HalfDead3.html",
-  },
-  {
-    id: "JUEGO-12",
     codigo: "AOK200",
     nombre: "Age of Kingdom 2",
     descripcion:
@@ -211,7 +168,7 @@ export const juegosPorDefecto: Juego[] = [
   },
 ];
 
-// Cuentas base: usuarios por defecto con roles de admin vendedor y cliente
+// cuentas iniciales para pruebas del sistema
 export const usuariosPorDefecto: Usuario[] = [
   {
     run: "111111111",
@@ -251,7 +208,7 @@ export const usuariosPorDefecto: Usuario[] = [
   },
 ];
 
-// Almacenamiento inicial: verifica si existen datos en localstorage si no los guarda
+// si no hay datos guardados en el localstorage cargamos los valores por defecto
 export function cargarDatosIniciales(): void {
   if (typeof window === "undefined") return;
 
@@ -265,14 +222,14 @@ export function cargarDatosIniciales(): void {
   }
 }
 
-// Obtener juegos: recupera el arreglo de productos desde el almacenamiento local
+// lee los juegos guardados en el localstorage
 export function getJuegos(): Juego[] {
   cargarDatosIniciales();
   const datos = localStorage.getItem("lista_juegos");
   return datos ? JSON.parse(datos) : juegosPorDefecto;
 }
 
-// Guardar juego: actualiza o agrega un nuevo producto a la lista en memoria
+// agrega o actualiza un juego en el catalogo
 export function saveJuego(juego: Juego): Juego {
   const juegos = getJuegos();
   if (juego.id) {
@@ -290,27 +247,27 @@ export function saveJuego(juego: Juego): Juego {
   return juego;
 }
 
-// Eliminar juego: quita un juego de la lista segun su identificador
+// elimina un juego del catalogo por id
 export function deleteJuego(id: string): void {
   const juegos = getJuegos();
   const filtrados = juegos.filter((j) => j.id !== id);
   localStorage.setItem("lista_juegos", JSON.stringify(filtrados));
 }
 
-// Buscar juego: encuentra un producto especifico usando su id
+// busca un juego especifico por su id
 export function getJuegoById(id: string): Juego | null {
   const juegos = getJuegos();
   return juegos.find((j) => j.id === id) || null;
 }
 
-// Obtener usuarios: recupera la lista de personas registradas en el storage
+// lee la lista de usuarios guardados
 export function getUsuarios(): Usuario[] {
   cargarDatosIniciales();
   const datos = localStorage.getItem("lista_usuarios");
   return datos ? JSON.parse(datos) : usuariosPorDefecto;
 }
 
-// Guardar usuario: registra o modifica los datos de una persona segun su run
+// guarda o modifica un usuario buscando por su run o correo
 export function saveUsuario(usuario: Usuario): Usuario {
   const usuarios = getUsuarios();
   let runLimpio = usuario.run
@@ -339,7 +296,7 @@ export function saveUsuario(usuario: Usuario): Usuario {
   return usuario;
 }
 
-// Eliminar usuario: remueve a un usuario registrado usando su run
+// borra un usuario por su run
 export function deleteUsuario(run: string): void {
   const usuarios = getUsuarios();
   const runLimpio = run.replace(/[^0-9kK]/g, "").toUpperCase();
@@ -347,14 +304,14 @@ export function deleteUsuario(run: string): void {
   localStorage.setItem("lista_usuarios", JSON.stringify(filtrados));
 }
 
-// Buscar usuario: busca una persona en la lista a traves de su run
+// busca un usuario por su run
 export function getUsuarioByRun(run: string): Usuario | null {
   const usuarios = getUsuarios();
   const runLimpio = run.replace(/[^0-9kK]/g, "").toUpperCase();
   return usuarios.find((u) => u.run === runLimpio) || null;
 }
 
-// Sesion de usuario: gestiona la sesion del usuario activo mediante sessionstorage
+// manejo de la sesion del usuario en sessionstorage (se borra al cerrar pestana)
 export function getCurrentUser(): Usuario | null {
   if (typeof window === "undefined") return null;
   const u = sessionStorage.getItem("usuario_logeado");
@@ -369,7 +326,7 @@ export function logoutUser(): void {
   sessionStorage.removeItem("usuario_logeado");
 }
 
-// Carrito de compras: funciones para agregar cambiar cantidad y vaciar la canasta
+// funciones para gestionar los productos en el carrito de compras
 export function getCarrito(): ItemCarrito[] {
   if (typeof window === "undefined") return [];
   const datos = localStorage.getItem("vapro_carrito");
@@ -380,7 +337,7 @@ export function guardarCarrito(carrito: ItemCarrito[]): void {
   localStorage.setItem("vapro_carrito", JSON.stringify(carrito));
 }
 
-// Funcion para agregar juegos al carrito
+// agrega un juego al carrito o suma la cantidad si ya estaba
 export function agregarAlCarrito(juego: Juego, cantidad = 1): ItemCarrito[] {
   const carrito = getCarrito();
   const pos = carrito.findIndex((item) => item.id === juego.id);
@@ -401,7 +358,7 @@ export function agregarAlCarrito(juego: Juego, cantidad = 1): ItemCarrito[] {
   return carrito;
 }
 
-// Funcion para eliminar juegos del carrito
+// quita un juego del carrito
 export function eliminarDelCarrito(idJuego: string): ItemCarrito[] {
   const carrito = getCarrito();
   const filtrados = carrito.filter((item) => item.id !== idJuego);
@@ -409,6 +366,7 @@ export function eliminarDelCarrito(idJuego: string): ItemCarrito[] {
   return filtrados;
 }
 
+// cambia la cantidad de un item (si llega a 0 se elimina solo)
 export function cambiarCantidadCarrito(
   idJuego: string,
   nuevaCantidad: number
@@ -426,11 +384,12 @@ export function cambiarCantidadCarrito(
   return carrito;
 }
 
-// Funcion para vaciar carrito
+// vacia todos los items del carrito
 export function vaciarCarrito(): void {
   localStorage.removeItem("vapro_carrito");
 }
 
+// calcula el total de unidades sumando las cantidades
 export function cantidadTotalCarrito(items?: ItemCarrito[]): number {
   const carrito = items || getCarrito();
   return carrito.reduce((acc, item) => acc + item.cantidad, 0);

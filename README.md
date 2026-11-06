@@ -37,6 +37,7 @@ Migración integral de la plataforma web **VaPro** desde Vanilla JavaScript a un
 
 ## Tecnologías Utilizadas
 - **React 19**
+- **React Router (react-router-dom)**
 - **TypeScript**
 - **Vite**
 - **Bootstrap 5**

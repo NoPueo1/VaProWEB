@@ -1,14 +1,26 @@
+import { useNavigate } from "react-router-dom";
+
 interface Props {
-  alVolver: () => void;
+  alVolver?: () => void;
 }
 
 function TerminosCondiciones({ alVolver }: Props) {
+  const navigate = useNavigate();
+
+  const manejarVolver = () => {
+    if (alVolver) {
+      alVolver();
+    } else {
+      navigate(-1);
+    }
+  };
+
   return (
     <main className="container my-5">
       <button
         type="button"
         className="btn btn-outline-light mb-4"
-        onClick={alVolver}
+        onClick={manejarVolver}
       >
         &larr; Volver
       </button>

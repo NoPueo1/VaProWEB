@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import type { ItemCarrito, Usuario } from "../services/storage";
 import { formatoPesos } from "../services/validations";
 import Boton from "./Boton";
@@ -10,8 +11,8 @@ interface Props {
   alCambiarCantidad: (id: string, nuevaCantidad: number) => void;
   alEliminar: (id: string) => void;
   alVaciar: () => void;
-  alIrLogin: () => void;
-  alIrProductos: () => void;
+  alIrLogin?: () => void;
+  alIrProductos?: () => void;
 }
 
 function CarritoModal({
@@ -25,6 +26,7 @@ function CarritoModal({
   alIrLogin,
   alIrProductos,
 }: Props) {
+  const navigate = useNavigate();
   if (!abierto) return null;
 
   const total = carrito.reduce(
@@ -54,7 +56,11 @@ function CarritoModal({
       );
       if (deseaLogin) {
         alCerrar();
-        alIrLogin();
+        if (alIrLogin) {
+          alIrLogin();
+        } else {
+          navigate("/login");
+        }
         return;
       }
       alert("¡Compra exitosa! Gracias por tu compra en Vapro.");
@@ -93,7 +99,11 @@ function CarritoModal({
                   className="btn btn-morado px-4 py-2"
                   onClick={() => {
                     alCerrar();
-                    alIrProductos();
+                    if (alIrProductos) {
+                      alIrProductos();
+                    } else {
+                      navigate("/productos");
+                    }
                   }}
                 >
                   Ver Productos

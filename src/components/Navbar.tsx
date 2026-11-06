@@ -1,10 +1,12 @@
+import { Link } from "react-router-dom";
+import { PAGINAS } from "../data/Paginas";
 import type { Usuario } from "../services/storage";
 import Boton from "./Boton";
 import Insignia from "./Insignia";
 
 interface Props {
-  seccionActiva: string;
-  alCambiarSeccion: (seccion: string) => void;
+  paginaActual: string;
+  alCambiarPagina: (nuevaPagina: string) => void;
   cantidadCarrito?: number;
   alAbrirCarrito?: () => void;
   usuarioActual: Usuario | null;
@@ -12,8 +14,8 @@ interface Props {
 }
 
 function Navbar({
-  seccionActiva,
-  alCambiarSeccion,
+  paginaActual,
+  alCambiarPagina,
   cantidadCarrito = 0,
   alAbrirCarrito,
   usuarioActual,
@@ -28,12 +30,10 @@ function Navbar({
     <header className="py-3 mb-4">
       <div className="container-fluid d-flex flex-wrap align-items-center justify-content-center justify-content-md-between">
         <div className="col-md-3 mb-2 mb-md-0">
-          <div
-            role="button"
-            tabIndex={0}
-            onClick={() => alCambiarSeccion("inicio")}
+          <Link
+            to="/"
+            onClick={() => alCambiarPagina("Inicio")}
             className="d-inline-flex align-items-center text-decoration-none brand-container"
-            style={{ cursor: "pointer" }}
           >
             <img
               src="/Assets/logo.png"
@@ -45,67 +45,26 @@ function Navbar({
               alt="VaPro"
               className="brand-text-img"
             />
-          </div>
+          </Link>
         </div>
 
         <ul className="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-          <li>
-            <button
-              type="button"
-              className={`nav-link px-2 ${
-                seccionActiva === "inicio" ? "fw-bold text-white" : "text-light"
-              } bg-transparent border-0`}
-              onClick={() => alCambiarSeccion("inicio")}
-            >
-              Pagina Principal
-            </button>
-          </li>
-          <li>
-            <button
-              type="button"
-              className={`nav-link px-2 ${
-                seccionActiva === "productos"
-                  ? "fw-bold text-white"
-                  : "text-light"
-              } bg-transparent border-0`}
-              onClick={() => alCambiarSeccion("productos")}
-            >
-              Productos
-            </button>
-          </li>
-          <li>
-            <button
-              type="button"
-              className={`nav-link px-2 ${
-                seccionActiva === "nosotros" ? "fw-bold text-white" : "text-light"
-              } bg-transparent border-0`}
-              onClick={() => alCambiarSeccion("nosotros")}
-            >
-              Sobre Nosotros
-            </button>
-          </li>
-          <li>
-            <button
-              type="button"
-              className={`nav-link px-2 ${
-                seccionActiva === "blog" ? "fw-bold text-white" : "text-light"
-              } bg-transparent border-0`}
-              onClick={() => alCambiarSeccion("blog")}
-            >
-              Blog
-            </button>
-          </li>
-          <li>
-            <button
-              type="button"
-              className={`nav-link px-2 ${
-                seccionActiva === "contacto" ? "fw-bold text-white" : "text-light"
-              } bg-transparent border-0`}
-              onClick={() => alCambiarSeccion("contacto")}
-            >
-              Contacto
-            </button>
-          </li>
+          {/* Recorremos el arreglo de páginas definido en Paginas.ts */}
+          {PAGINAS.map((pag) => (
+            <li key={pag.ruta} className="nav-item">
+              <Link
+                to={pag.ruta}
+                className={`nav-link px-2 ${
+                  paginaActual === pag.nombreCorto
+                    ? "fw-bold text-white active"
+                    : "text-light"
+                }`}
+                onClick={() => alCambiarPagina(pag.nombreCorto)}
+              >
+                {pag.nombre}
+              </Link>
+            </li>
+          ))}
         </ul>
 
         <div className="col-md-4 text-end d-flex align-items-center justify-content-end">
@@ -123,22 +82,24 @@ function Navbar({
 
           {!usuarioActual ? (
             <div className="d-inline-flex align-items-center">
-              <Boton
-                clase={`btn btn-outline-light me-2 ${
-                  seccionActiva === "login" ? "active" : ""
+              <Link
+                to="/login"
+                className={`btn btn-outline-light me-2 ${
+                  paginaActual === "Login" ? "active" : ""
                 }`}
-                alHacerClick={() => alCambiarSeccion("login")}
+                onClick={() => alCambiarPagina("Login")}
               >
                 Iniciar Sesión
-              </Boton>
-              <Boton
-                clase={`btn btn-morado ${
-                  seccionActiva === "registro" ? "active" : ""
+              </Link>
+              <Link
+                to="/registro"
+                className={`btn btn-morado ${
+                  paginaActual === "Registro" ? "active" : ""
                 }`}
-                alHacerClick={() => alCambiarSeccion("registro")}
+                onClick={() => alCambiarPagina("Registro")}
               >
                 Registrarse
-              </Boton>
+              </Link>
             </div>
           ) : (
             <div className="d-inline-flex align-items-center">
@@ -146,15 +107,15 @@ function Navbar({
                 Hola, <strong>{usuarioActual.nombre}</strong>
               </span>
               {esAdminOVendedor && (
-                <button
-                  type="button"
+                <Link
+                  to="/admin"
                   className={`btn btn-sm btn-outline-info me-2 fw-bold ${
-                    seccionActiva === "admin" ? "active" : ""
+                    paginaActual === "Admin" ? "active" : ""
                   }`}
-                  onClick={() => alCambiarSeccion("admin")}
+                  onClick={() => alCambiarPagina("Admin")}
                 >
                   Panel Admin
-                </button>
+                </Link>
               )}
               <button
                 type="button"

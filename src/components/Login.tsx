@@ -1,15 +1,17 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { validarCorreo, validarPassword } from "../services/validations";
 import { getUsuarios, setCurrentUser, type Usuario } from "../services/storage";
 import Boton from "./Boton";
 
 interface Props {
   alIniciarSesionExitoso: (usuario: Usuario, destino: string) => void;
-  alIrRegistro: () => void;
+  alIrRegistro?: () => void;
 }
 
 function Login({ alIniciarSesionExitoso, alIrRegistro }: Props) {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [recordarme, setRecordarme] = useState(false);
@@ -42,7 +44,8 @@ function Login({ alIniciarSesionExitoso, alIrRegistro }: Props) {
     if (u && (u.rol === "Administrador" || u.rol === "Vendedor")) {
       setCurrentUser(u);
       alert("Bienvenido al panel, " + u.nombre);
-      alIniciarSesionExitoso(u, "admin");
+      alIniciarSesionExitoso(u, "/admin");
+      navigate("/admin");
     } else {
       const usuarioCliente: Usuario = u || {
         run: "CLI-" + Date.now(),
@@ -56,7 +59,8 @@ function Login({ alIniciarSesionExitoso, alIrRegistro }: Props) {
       };
       setCurrentUser(usuarioCliente);
       alert("¡Bienvenido a Vapro!");
-      alIniciarSesionExitoso(usuarioCliente, "inicio");
+      alIniciarSesionExitoso(usuarioCliente, "/");
+      navigate("/");
     }
   };
 
@@ -139,13 +143,22 @@ function Login({ alIniciarSesionExitoso, alIrRegistro }: Props) {
 
             <div className="text-center text-light mb-3">
               ¿No tienes cuenta?{" "}
-              <button
-                type="button"
-                className="btn btn-link text-primary text-decoration-none fw-bold p-0 border-0 align-baseline"
-                onClick={alIrRegistro}
-              >
-                Regístrate aquí
-              </button>
+              {alIrRegistro ? (
+                <button
+                  type="button"
+                  className="btn btn-link text-primary text-decoration-none fw-bold p-0 border-0 align-baseline"
+                  onClick={alIrRegistro}
+                >
+                  Regístrate aquí
+                </button>
+              ) : (
+                <Link
+                  to="/registro"
+                  className="text-primary text-decoration-none fw-bold"
+                >
+                  Regístrate aquí
+                </Link>
+              )}
             </div>
 
             <div

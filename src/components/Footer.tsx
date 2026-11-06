@@ -1,21 +1,21 @@
+import { Link } from "react-router-dom";
+import { PAGINAS } from "../data/Paginas";
+
 interface Props {
-  alCambiarSeccion: (seccion: string) => void;
-  alAbrirCarrito: () => void;
-  alIrAdmin: () => void;
+  alCambiarPagina?: (nuevaPagina: string) => void;
+  alAbrirCarrito?: () => void;
 }
 
-function Footer({ alCambiarSeccion, alAbrirCarrito, alIrAdmin }: Props) {
+function Footer({ alCambiarPagina, alAbrirCarrito }: Props) {
   return (
     <footer className="py-5 mt-auto">
       <div className="container">
         <div className="row g-4 justify-content-between">
           <div className="col-12 col-md-6 col-lg-5">
-            <div
-              role="button"
-              tabIndex={0}
+            <Link
+              to="/"
               className="d-flex align-items-center mb-3 text-decoration-none brand-container"
-              onClick={() => alCambiarSeccion("inicio")}
-              style={{ cursor: "pointer" }}
+              onClick={() => alCambiarPagina && alCambiarPagina("Inicio")}
             >
               <img
                 src="/Assets/logo.png"
@@ -27,7 +27,7 @@ function Footer({ alCambiarSeccion, alAbrirCarrito, alIrAdmin }: Props) {
                 alt="VaPro"
                 className="footer-text-img"
               />
-            </div>
+            </Link>
             <p className="text-light mb-2">
               &copy; 2026 Provoste-Vasquez Corporation. Todos los derechos reservados.
             </p>
@@ -39,42 +39,18 @@ function Footer({ alCambiarSeccion, alAbrirCarrito, alIrAdmin }: Props) {
           <div className="col-12 col-md-5 col-lg-4">
             <h5 className="text-white">Enlaces del Sitio</h5>
             <ul className="nav flex-column">
-              <li className="nav-item mb-2">
-                <button
-                  type="button"
-                  className="nav-link p-0 text-light bg-transparent border-0 text-start"
-                  onClick={() => alCambiarSeccion("inicio")}
-                >
-                  Página Principal
-                </button>
-              </li>
-              <li className="nav-item mb-2">
-                <button
-                  type="button"
-                  className="nav-link p-0 text-light bg-transparent border-0 text-start"
-                  onClick={() => alCambiarSeccion("nosotros")}
-                >
-                  Sobre Nosotros
-                </button>
-              </li>
-              <li className="nav-item mb-2">
-                <button
-                  type="button"
-                  className="nav-link p-0 text-light bg-transparent border-0 text-start"
-                  onClick={() => alCambiarSeccion("blog")}
-                >
-                  Blog
-                </button>
-              </li>
-              <li className="nav-item mb-2">
-                <button
-                  type="button"
-                  className="nav-link p-0 text-light bg-transparent border-0 text-start"
-                  onClick={() => alCambiarSeccion("contacto")}
-                >
-                  Contacto
-                </button>
-              </li>
+              {/* Recorremos las páginas del sitio */}
+              {PAGINAS.map((pag) => (
+                <li key={pag.ruta} className="nav-item mb-2">
+                  <Link
+                    to={pag.ruta}
+                    className="nav-link p-0 text-light bg-transparent border-0 text-start"
+                    onClick={() => alCambiarPagina && alCambiarPagina(pag.nombreCorto)}
+                  >
+                    {pag.nombre}
+                  </Link>
+                </li>
+              ))}
               <li className="nav-item mb-2">
                 <button
                   type="button"
@@ -85,13 +61,13 @@ function Footer({ alCambiarSeccion, alAbrirCarrito, alIrAdmin }: Props) {
                 </button>
               </li>
               <li className="nav-item mb-2">
-                <button
-                  type="button"
+                <Link
+                  to="/admin"
                   className="nav-link p-0 text-light fw-bold bg-transparent border-0 text-start"
-                  onClick={alIrAdmin}
+                  onClick={() => alCambiarPagina && alCambiarPagina("Admin")}
                 >
                   Panel Administrador
-                </button>
+                </Link>
               </li>
             </ul>
           </div>

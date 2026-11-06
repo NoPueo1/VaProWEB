@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import type { Usuario } from "../../services/storage";
 import MantenedorJuegos from "./MantenedorJuegos";
 import MantenedorUsuarios from "./MantenedorUsuarios";
 
 interface Props {
   usuarioActual: Usuario | null;
-  alVolverTienda: () => void;
-  alIrLogin: () => void;
+  alVolverTienda?: () => void;
+  alIrLogin?: () => void;
   alCerrarSesion: () => void;
   alActualizarCatalogo: () => void;
 }
@@ -18,6 +19,7 @@ function AdminPanel({
   alCerrarSesion,
   alActualizarCatalogo,
 }: Props) {
+  const navigate = useNavigate();
   const [seccionAdmin, setSeccionAdmin] = useState<
     "inicio" | "juegos" | "usuarios"
   >("inicio");
@@ -28,10 +30,14 @@ function AdminPanel({
       (usuarioActual.rol !== "Administrador" &&
         usuarioActual.rol !== "Vendedor")
     ) {
-      alert("Debes iniciar sesión como Administrador.");
-      alIrLogin();
+      alert("Debes iniciar sesión como Administrador o Vendedor.");
+      if (alIrLogin) {
+        alIrLogin();
+      } else {
+        navigate("/login");
+      }
     }
-  }, [usuarioActual, alIrLogin]);
+  }, [usuarioActual, alIrLogin, navigate]);
 
   if (
     !usuarioActual ||
@@ -51,6 +57,14 @@ function AdminPanel({
     setSeccionAdmin(sec);
   };
 
+  const manejarVolverTienda = () => {
+    if (alVolverTienda) {
+      alVolverTienda();
+    } else {
+      navigate("/");
+    }
+  };
+
   return (
     <main className="container my-5">
       <div className="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
@@ -59,7 +73,7 @@ function AdminPanel({
           <button
             type="button"
             className="btn btn-outline-light me-2 btn-sm"
-            onClick={alVolverTienda}
+            onClick={manejarVolverTienda}
           >
             Volver a la Tienda
           </button>
@@ -112,7 +126,7 @@ function AdminPanel({
               <button
                 type="button"
                 className="list-group-item list-group-item-action"
-                onClick={alVolverTienda}
+                onClick={manejarVolverTienda}
               >
                 Volver a la Tienda
               </button>

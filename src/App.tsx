@@ -1,6 +1,8 @@
 import { useState } from "react";
+// Para enrutamiento o navegacion a otras paginas
+import { Routes, Route, useNavigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import Carrusel from "./components/Carrusel";
+import Inicio from "./components/Inicio";
 import Catalogo from "./components/Catalogo";
 import SobreNosotros from "./components/SobreNosotros";
 import Contacto from "./components/Contacto";
@@ -13,6 +15,8 @@ import ModalDetalle from "./components/ModalDetalle";
 import CarritoModal from "./components/CarritoModal";
 import Alerta from "./components/Alerta";
 import Footer from "./components/Footer";
+import ScrollToTop from "./components/ScrollToTop";
+import PaginaNoEncontrada from "./components/PaginaNoEncontrada";
 import {
   cargarDatosIniciales,
   getJuegos,
@@ -30,7 +34,11 @@ import {
 } from "./services/storage";
 
 function App() {
-  const [seccionActiva, setSeccionActiva] = useState<string>("inicio");
+  const navigate = useNavigate();
+
+  // Definimos un state que guarde el nombre de la pagina actual
+  const [paginaActual, setPaginaActual] = useState("Inicio");
+
   const [juegos, setJuegos] = useState<Juego[]>(() => {
     cargarDatosIniciales();
     return getJuegos();
@@ -73,26 +81,15 @@ function App() {
 
   const manejarIniciarSesionExitoso = (usuario: Usuario, destino: string) => {
     setUsuarioActual(usuario);
-    setSeccionActiva(destino);
+    setPaginaActual(destino === "/admin" ? "Admin" : "Inicio");
+    navigate(destino);
   };
 
   const manejarCerrarSesion = () => {
     logoutUser();
     setUsuarioActual(null);
-    setSeccionActiva("inicio");
-  };
-
-  const manejarIrAdmin = () => {
-    if (
-      usuarioActual &&
-      (usuarioActual.rol === "Administrador" ||
-        usuarioActual.rol === "Vendedor")
-    ) {
-      setSeccionActiva("admin");
-    } else {
-      alert("Debes iniciar sesión con una cuenta de Administrador o Vendedor.");
-      setSeccionActiva("login");
-    }
+    setPaginaActual("Inicio");
+    navigate("/");
   };
 
   const totalUnidadesCarrito = cantidadTotalCarrito(carrito);
@@ -100,18 +97,20 @@ function App() {
 
   return (
     <div className="d-flex flex-column min-vh-100">
+      <ScrollToTop />
+
+      {/* ============== NAV BAR ============== */}
       <Navbar
-        seccionActiva={seccionActiva}
-        alCambiarSeccion={(sec) => {
-          setSeccionActiva(sec);
-          window.scrollTo({ top: 0, behavior: "smooth" });
-        }}
+        paginaActual={paginaActual}
+        alCambiarPagina={setPaginaActual}
         cantidadCarrito={totalUnidadesCarrito}
         alAbrirCarrito={() => setCarritoAbierto(true)}
         usuarioActual={usuarioActual}
         alCerrarSesion={manejarCerrarSesion}
       />
+      {/* ===================================== */}
 
+      {/* ============== MAIN ============== */}
       <main className="container my-4 flex-grow-1">
         {mensajeAlerta && (
           <Alerta tipo="success" alCerrar={() => setMensajeAlerta(null)}>
@@ -119,64 +118,67 @@ function App() {
           </Alerta>
         )}
 
-        {seccionActiva === "inicio" && (
-          <>
-            <Carrusel
-              juegosDestacados={juegosDestacados}
-              alSeleccionar={(j) => setJuegoSeleccionado(j)}
-            />
-            <Catalogo
-              juegos={juegos}
-              alComprar={(j) => agregarJuegoAlCarrito(j, 1)}
-              alSeleccionar={(j) => setJuegoSeleccionado(j)}
-            />
-          </>
-        )}
-
-        {seccionActiva === "productos" && (
-          <Catalogo
-            juegos={juegos}
-            alComprar={(j) => agregarJuegoAlCarrito(j, 1)}
-            alSeleccionar={(j) => setJuegoSeleccionado(j)}
+        {/* Estas son las rutas de navegacion dentro del sitio */}
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Inicio
+                juegos={juegos}
+                juegosDestacados={juegosDestacados}
+                alComprar={(j) => agregarJuegoAlCarrito(j, 1)}
+                alSeleccionar={(j) => setJuegoSeleccionado(j)}
+              />
+            }
           />
-        )}
-
-        {seccionActiva === "nosotros" && <SobreNosotros />}
-
-        {seccionActiva === "blog" && <Blog />}
-
-        {seccionActiva === "contacto" && <Contacto />}
-
-        {seccionActiva === "login" && (
-          <Login
-            alIniciarSesionExitoso={manejarIniciarSesionExitoso}
-            alIrRegistro={() => setSeccionActiva("registro")}
+          <Route
+            path="/productos"
+            element={
+              <Catalogo
+                juegos={juegos}
+                alComprar={(j) => agregarJuegoAlCarrito(j, 1)}
+                alSeleccionar={(j) => setJuegoSeleccionado(j)}
+              />
+            }
           />
-        )}
-
-        {seccionActiva === "registro" && (
-          <Registro
-            alRegistroExitoso={() => setSeccionActiva("login")}
-            alIrLogin={() => setSeccionActiva("login")}
-            alVerTerminos={() => setSeccionActiva("terminos")}
+          <Route path="/nosotros" element={<SobreNosotros />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/contacto" element={<Contacto />} />
+          <Route
+            path="/login"
+            element={
+              <Login
+                alIniciarSesionExitoso={manejarIniciarSesionExitoso}
+              />
+            }
           />
-        )}
-
-        {seccionActiva === "terminos" && (
-          <TerminosCondiciones
-            alVolver={() => setSeccionActiva("registro")}
+          <Route
+            path="/registro"
+            element={
+              <Registro />
+            }
           />
-        )}
-
-        {seccionActiva === "admin" && (
-          <AdminPanel
-            usuarioActual={usuarioActual}
-            alVolverTienda={() => setSeccionActiva("inicio")}
-            alIrLogin={() => setSeccionActiva("login")}
-            alCerrarSesion={manejarCerrarSesion}
-            alActualizarCatalogo={refrescarCatalogo}
+          <Route path="/terminos" element={<TerminosCondiciones />} />
+          <Route
+            path="/admin"
+            element={
+              <AdminPanel
+                usuarioActual={usuarioActual}
+                alVolverTienda={() => {
+                  setPaginaActual("Inicio");
+                  navigate("/");
+                }}
+                alIrLogin={() => {
+                  setPaginaActual("Login");
+                  navigate("/login");
+                }}
+                alCerrarSesion={manejarCerrarSesion}
+                alActualizarCatalogo={refrescarCatalogo}
+              />
+            }
           />
-        )}
+          <Route path="*" element={<PaginaNoEncontrada />} />
+        </Routes>
       </main>
 
       {juegoSeleccionado && (
@@ -197,18 +199,14 @@ function App() {
         alCambiarCantidad={cambiarCantidad}
         alEliminar={eliminarJuegoDelCarrito}
         alVaciar={vaciarElCarrito}
-        alIrLogin={() => setSeccionActiva("login")}
-        alIrProductos={() => setSeccionActiva("productos")}
       />
 
+      {/* ============== FOOTER ============== */}
       <Footer
-        alCambiarSeccion={(sec) => {
-          setSeccionActiva(sec);
-          window.scrollTo({ top: 0, behavior: "smooth" });
-        }}
+        alCambiarPagina={setPaginaActual}
         alAbrirCarrito={() => setCarritoAbierto(true)}
-        alIrAdmin={manejarIrAdmin}
       />
+      {/* ===================================== */}
     </div>
   );
 }

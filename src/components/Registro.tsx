@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {
   validarRut,
   validarCorreo,
@@ -10,12 +11,13 @@ import { REGIONES_CHILE } from "../data/chile-data";
 import Boton from "./Boton";
 
 interface Props {
-  alRegistroExitoso: () => void;
-  alIrLogin: () => void;
-  alVerTerminos: () => void;
+  alRegistroExitoso?: () => void;
+  alIrLogin?: () => void;
+  alVerTerminos?: () => void;
 }
 
 function Registro({ alRegistroExitoso, alIrLogin, alVerTerminos }: Props) {
+  const navigate = useNavigate();
   const [run, setRun] = useState("");
   const [email, setEmail] = useState("");
   const [nombre, setNombre] = useState("");
@@ -127,7 +129,11 @@ function Registro({ alRegistroExitoso, alIrLogin, alVerTerminos }: Props) {
     });
 
     alert("¡Cuenta creada exitosamente! Ahora puedes iniciar sesión.");
-    alRegistroExitoso();
+    if (alRegistroExitoso) {
+      alRegistroExitoso();
+    } else {
+      navigate("/login");
+    }
   };
 
   return (
@@ -369,13 +375,23 @@ function Registro({ alRegistroExitoso, alIrLogin, alVerTerminos }: Props) {
               />
               <label className="form-check-label text-light" htmlFor="terms">
                 Acepto los{" "}
-                <button
-                  type="button"
-                  className="btn btn-link text-primary text-decoration-none p-0 border-0 align-baseline"
-                  onClick={alVerTerminos}
-                >
-                  Términos y Condiciones
-                </button>
+                {alVerTerminos ? (
+                  <button
+                    type="button"
+                    className="btn btn-link text-primary text-decoration-none p-0 border-0 align-baseline"
+                    onClick={alVerTerminos}
+                  >
+                    Términos y Condiciones
+                  </button>
+                ) : (
+                  <Link
+                    to="/terminos"
+                    target="_blank"
+                    className="text-primary text-decoration-none"
+                  >
+                    Términos y Condiciones
+                  </Link>
+                )}
               </label>
             </div>
 
@@ -388,13 +404,22 @@ function Registro({ alRegistroExitoso, alIrLogin, alVerTerminos }: Props) {
 
             <div className="text-center text-light">
               ¿Ya tienes una cuenta?{" "}
-              <button
-                type="button"
-                className="btn btn-link text-primary text-decoration-none fw-bold p-0 border-0 align-baseline"
-                onClick={alIrLogin}
-              >
-                Inicia sesión aquí
-              </button>
+              {alIrLogin ? (
+                <button
+                  type="button"
+                  className="btn btn-link text-primary text-decoration-none fw-bold p-0 border-0 align-baseline"
+                  onClick={alIrLogin}
+                >
+                  Inicia sesión aquí
+                </button>
+              ) : (
+                <Link
+                  to="/login"
+                  className="text-primary text-decoration-none fw-bold"
+                >
+                  Inicia sesión aquí
+                </Link>
+              )}
             </div>
           </form>
         </div>

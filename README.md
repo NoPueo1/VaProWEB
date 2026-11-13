@@ -2,7 +2,7 @@
 
 Proyecto de tienda digital de videojuegos desarrollado para la asignatura de Desarrollo Web / Fullstack en Duoc UC.
 
-## Integrantes
+## Integrantes 
 - Vicente Provoste
 - Agustín Vásquez
 
